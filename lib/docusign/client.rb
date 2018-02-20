@@ -8,7 +8,7 @@ module Docusign
     def get(path, **options)
       url = uri(path, options[:query])
       request = ::Net::HTTP::Get.new(url.request_uri, default_headers.merge(options[:headers].to_h))
-      dispatch(url, request)
+      dispatch(url, request, pdf: options[:pdf])
     end
 
     def delete(path, **options)
@@ -51,9 +51,9 @@ module Docusign
 
     private
 
-      def dispatch(url, req)
+      def dispatch(url, req, pdf: false)
         response = http(url).request(req)
-        ::Docusign::Response.new(response)
+        ::Docusign::Response.new(response: response, pdf: pdf)
       end
 
       def http(url)

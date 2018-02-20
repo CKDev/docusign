@@ -6,7 +6,14 @@ describe Docusign::Response do
     stub_request(:get, "http://localhost/response").
       with(headers: {'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type' => 'application/json', 'User-Agent' => 'Ruby'}).
       to_return(status: 200, body: { data: { nested: { stuff: 'Hello' }, info: 'Things' } }.to_json, headers: {})
-    Docusign::Response.new(Docusign.client.get('http://localhost/response').response)
+    Docusign::Response.new(response: Docusign.client.get('http://localhost/response').response)
+  end
+
+  let(:pdf_response) do
+    stub_request(:get, "http://localhost/response").
+      with(headers: {'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type' => 'application/json', 'User-Agent' => 'Ruby'}).
+      to_return(status: 200, body: 'PDF', headers: {})
+    Docusign::Response.new(response: Docusign.client.get('http://localhost/response', pdf: true), pdf: true)
   end
 
   it 'allows for nested hash data retrieval using methods' do
@@ -25,6 +32,11 @@ describe Docusign::Response do
     response = Docusign::Response.new
     expect(response.code).to eq('NO_RESPONSE')
     expect(response.message).to eq('Provided response object was not an instance of Net::HTTPResponse')
+  end
+
+  it 'allow pdf param' do
+    expect(JSON).to_not receive(:parse)
+    pdf_response
   end
 
 end

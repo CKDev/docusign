@@ -171,6 +171,12 @@ describe Docusign do
       expect(envelope.status).to eq('created')
     end
 
+    it 'can get document pdfs' do
+      envelope.add_document(file_fixture('pdf1.pdf').expand_path)
+      envelope.save
+      expect(envelope.document_pdfs).to_not be_empty
+    end
+
   end
 
   context 'Signer' do

@@ -71,6 +71,10 @@ module Docusign
       self.save(validate: false)
     end
 
+    def document_pdfs
+      Docusign.client.get("envelopes/#{envelope_id}/documents/combined", pdf: true).response_data
+    end
+
     alias_method :send!, :sent!
 
     alias_method :void!, :voided!
