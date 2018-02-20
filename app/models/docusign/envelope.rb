@@ -71,7 +71,7 @@ module Docusign
       self.save(validate: false)
     end
 
-    def document_pdfs
+    def combined_documents_pdf
       Docusign.client.get("envelopes/#{envelope_id}/documents/combined", pdf: true).response_data
     end
 

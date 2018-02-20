@@ -174,7 +174,7 @@ describe Docusign do
     it 'can get document pdfs' do
       envelope.add_document(file_fixture('pdf1.pdf').expand_path)
       envelope.save
-      expect(envelope.document_pdfs).to_not be_empty
+      expect(envelope.combined_documents_pdf).to_not be_empty
     end
 
   end
